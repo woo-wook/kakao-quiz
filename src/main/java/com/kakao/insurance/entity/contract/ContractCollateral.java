@@ -7,6 +7,8 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 
+import java.math.BigDecimal;
+
 import static javax.persistence.FetchType.LAZY;
 import static javax.persistence.GenerationType.IDENTITY;
 
@@ -58,5 +60,6 @@ public class ContractCollateral {
     /**
      * 보험료
      */
-    private double premium;
+    @Column(scale = 2)
+    private BigDecimal premium;
 }

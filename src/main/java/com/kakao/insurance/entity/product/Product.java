@@ -8,6 +8,8 @@ import lombok.NoArgsConstructor;
 import javax.persistence.*;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 import static javax.persistence.GenerationType.IDENTITY;
 
@@ -54,4 +56,7 @@ public class Product extends BaseEntity {
      * 유효기간(종료)
      */
     private LocalDateTime validityEndDate;
+
+    @OneToMany(mappedBy = "product")
+    private List<ProductCollateral> collaterals = new ArrayList<>();
 }

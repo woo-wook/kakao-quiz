@@ -1,0 +1,5 @@
+###
+GET http://localhost:9010/api/v1/contracts/calculate?productId=1&collateralIds=1&contractMonths=2
+
+###
+GET http://localhost:9010/api/v1/contracts/calculate?productId=2&collateralIds=3&collateralIds=4&contractMonths=11

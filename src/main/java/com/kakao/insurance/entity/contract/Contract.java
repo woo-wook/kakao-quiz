@@ -40,14 +40,9 @@ public class Contract extends BaseEntity {
     private Product product;
 
     /**
-     * 계약기간 시작 월 (일단위 미사용, 월로만 관리)
+     * 계약기간
      */
-    private LocalDate contractStartDate;
-
-    /**
-     * 계약기간 종료 월 (일단위 미사용, 월로만 관리)
-     */
-    private LocalDate contractEndDate;
+    private int contractMonths;
 
     /**
      * 보험 시작 일자
@@ -58,11 +53,6 @@ public class Contract extends BaseEntity {
      * 보험 종료 일자
      */
     private LocalDate insureEndDate;
-
-    /**
-     * 총보험료
-     */
-    private double totalPremium;
 
     /**
      * 계약상태
