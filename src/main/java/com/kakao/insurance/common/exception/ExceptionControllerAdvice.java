@@ -12,7 +12,6 @@ import static com.kakao.insurance.common.exception.ExceptionCode.UNKNOWN_ERROR;
 @Slf4j
 @RestControllerAdvice
 public class ExceptionControllerAdvice {
-
     @ExceptionHandler(value = UncheckedException.class)
     public ResponseEntity<ExceptionResult> handler(HttpServletRequest request, UncheckedException error) {
         return ResponseEntity
