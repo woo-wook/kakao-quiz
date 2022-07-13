@@ -6,13 +6,13 @@ import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.springframework.util.Assert;
 
 import javax.persistence.*;
+import java.math.BigDecimal;
 import java.time.LocalDate;
-import java.time.temporal.TemporalUnit;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 import static javax.persistence.CascadeType.ALL;
 import static javax.persistence.EnumType.STRING;
@@ -103,5 +103,20 @@ public class Contract extends BaseEntity {
                 .insureEndDate(end)
                 .status(ContractStatus.NORMAL)
                 .build();
+    }
+
+    /**
+     * 총 보험료 조회
+     * @return 총 보험료
+     */
+    public BigDecimal getTotalPremium() {
+        if(collaterals == null || collaterals.isEmpty()) {
+            return BigDecimal.valueOf(0.0);
+        }
+
+        return collaterals.stream()
+                .map(ContractCollateral::getPremium)
+                .filter(Objects::nonNull)
+                .reduce(BigDecimal.ZERO, BigDecimal::add);
     }
 }

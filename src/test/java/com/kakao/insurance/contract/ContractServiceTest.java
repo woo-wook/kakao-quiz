@@ -21,6 +21,48 @@ public class ContractServiceTest {
     private ContractService contractService;
 
     @Test
+    public void 계약_목록_조회() throws Exception {
+        // given
+        Long travelProductId = 1L; // 여행자 보험
+        List<Long> travelCollateralIds = Arrays.asList(1L); // 담보
+        int travelContractMonths = 2; // 계약기간
+
+        Contract contract = contractService.create(travelProductId, travelCollateralIds, travelContractMonths);
+        
+        // when
+        List<Contract> contracts = contractService.findAll();
+
+        // then
+        contract = contracts.get(0);
+
+        Assertions.assertNotNull(contract);
+        Assertions.assertEquals(contract.getContractMonths(), travelContractMonths);
+        Assertions.assertEquals(contract.getInsureStartDate(), LocalDate.now());
+        Assertions.assertEquals(contract.getInsureEndDate(), LocalDate.now().plusMonths(travelContractMonths));
+        Assertions.assertEquals(contract.getStatus(), ContractStatus.NORMAL);
+    }
+
+    @Test
+    public void 계약_단건_조회() throws Exception {
+        // given
+        Long travelProductId = 1L; // 여행자 보험
+        List<Long> travelCollateralIds = Arrays.asList(1L); // 담보
+        int travelContractMonths = 2; // 계약기간
+
+        Contract contract = contractService.create(travelProductId, travelCollateralIds, travelContractMonths);
+
+        // when
+        contract = contractService.findById(contract.getId());
+
+        // then
+        Assertions.assertNotNull(contract);
+        Assertions.assertEquals(contract.getContractMonths(), travelContractMonths);
+        Assertions.assertEquals(contract.getInsureStartDate(), LocalDate.now());
+        Assertions.assertEquals(contract.getInsureEndDate(), LocalDate.now().plusMonths(travelContractMonths));
+        Assertions.assertEquals(contract.getStatus(), ContractStatus.NORMAL);
+    }
+
+    @Test
     public void 계약_신규_생성() throws Exception {
         // given
         Long travelProductId = 1L; // 여행자 보험

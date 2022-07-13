@@ -1,5 +1,6 @@
 package com.kakao.insurance.dto.contract;
 
+import com.kakao.insurance.entity.contract.ContractCollateral;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Builder;
@@ -32,4 +33,17 @@ public class ContractCollateralResult {
      */
     @ApiModelProperty("보험료")
     private BigDecimal premium;
+
+    /**
+     * 결과 객체 변환
+     * @param collateral 변환할 담보
+     * @return 결과 객체로 변환하여 반환
+     */
+    public static ContractCollateralResult toResult(ContractCollateral collateral) {
+        return ContractCollateralResult.builder()
+                .collateralId(collateral.getId())
+                .collateralName(collateral.getName())
+                .premium(collateral.getPremium())
+                .build();
+    }
 }

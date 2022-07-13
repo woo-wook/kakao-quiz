@@ -7,6 +7,7 @@ import com.kakao.insurance.entity.contract.Contract;
 import com.kakao.insurance.entity.contract.ContractCollateral;
 import com.kakao.insurance.entity.product.Product;
 import com.kakao.insurance.exception.collateral.CollateralNotFoundException;
+import com.kakao.insurance.exception.contract.ContractNotFoundException;
 import com.kakao.insurance.exception.product.ImpossiblePeriodException;
 import com.kakao.insurance.exception.product.ProductNotFoundException;
 import com.kakao.insurance.repository.collateral.CollateralRepository;
@@ -33,9 +34,28 @@ public class ContractService {
 
     private final ContractRepository contractRepository;
     private final ContractQuerydslRepository contractQuerydslRepository;
-
     private final CollateralRepository collateralRepository;
     private final ProductRepository productRepository;
+
+    /**
+     * 계약 목록을 조회합니다.
+     * @return 전체 계약 목록
+     */
+    @Transactional(readOnly = true)
+    public List<Contract> findAll() {
+        return contractQuerydslRepository.findAll();
+    }
+
+    /**
+     * 계약을 조회합니다.
+     * @param id 조회할 계약 PK
+     * @return 계약정보
+     */
+    @Transactional(readOnly = true)
+    public Contract findById(Long id) {
+        return contractQuerydslRepository.findById(id)
+                .orElseThrow(ContractNotFoundException::new);
+    }
 
     /**
      * 계약을 생성합니다.
