@@ -10,6 +10,9 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
+
 import static javax.persistence.GenerationType.IDENTITY;
 
 /**
@@ -40,4 +43,13 @@ public class Collateral extends BaseEntity {
      * 기준금액
      */
     private int baseAmount;
+
+    /**
+     * 1달 보험료
+     * @return (가입금액 / 기준금액)
+     */
+    public BigDecimal getMonthPremium() {
+        return BigDecimal.valueOf(this.insureAmount)
+                .divide(BigDecimal.valueOf(this.baseAmount), 2, RoundingMode.DOWN);
+    }
 }

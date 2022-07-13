@@ -99,7 +99,7 @@ public class ContractService {
      */
     private BigDecimal calculatePremium(Collateral collateral, int contractMonths) {
         return BigDecimal.valueOf(contractMonths)
-                .multiply(BigDecimal.valueOf(collateral.getInsureAmount()).divide(BigDecimal.valueOf(collateral.getBaseAmount()), 2, BigDecimal.ROUND_DOWN))
+                .multiply(collateral.getMonthPremium())
                 .setScale(2, RoundingMode.DOWN);
     }
 }
