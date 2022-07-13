@@ -5,6 +5,9 @@ import io.swagger.annotations.ApiModelProperty;
 import lombok.Getter;
 import lombok.Setter;
 
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 import java.util.List;
 
 /**
@@ -18,18 +21,22 @@ public class ContractCalculateParam {
     /**
      * 상품 아이디
      */
-    @ApiModelProperty(value = "상품 아이디", required = true)
+    @ApiModelProperty(value = "상품 아이디")
+    @NotNull(message = "상품아이디는 필수 파라미터입니다.")
     private Long productId;
 
     /**
      * 담보 아이디 목록
      */
-    @ApiModelProperty(value = "담보 아이디 목록", required = true)
+    @ApiModelProperty(value = "담보 아이디 목록")
+    @NotNull(message = "담보 아이디 목록은 필수 파라미터입니다.")
+    @NotEmpty(message = "담보 아이디 목록은 필수 파라미터입니다.")
     private List<Long> collateralIds;
 
     /**
      * 계약기간
      */
     @ApiModelProperty(value = "계약기간", required = true)
+    @Min(value = 1, message = "최소 계약기간은 1달입니다.")
     private int contractMonths;
 }

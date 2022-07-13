@@ -8,6 +8,7 @@ import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -29,7 +30,7 @@ public class ContractV1Controller {
      */
     @ApiOperation(value = "계약 > 예상 총 보험료 계산", notes = "해당 계약 진행 시 예상 총 보험료를 계산합니다.")
     @GetMapping("/calculate")
-    public ResponseEntity<ContractCalculateResult> calculate(ContractCalculateParam param) {
+    public ResponseEntity<ContractCalculateResult> calculate(@Validated ContractCalculateParam param) {
         log.debug("ContractV1Controller :: calculate");
 
         ContractCalculateResult result = contractService.calculate(param.getProductId(), param.getCollateralIds(), param.getContractMonths());
