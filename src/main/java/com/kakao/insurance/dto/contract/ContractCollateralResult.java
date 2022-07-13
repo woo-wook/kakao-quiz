@@ -8,12 +8,12 @@ import lombok.Getter;
 import java.math.BigDecimal;
 
 /**
- * 담보 보험료 계산 결과
+ * 계약 담보 결과
  */
-@ApiModel("담보 보험료 계산 결과")
+@ApiModel("계약 담보 결과")
 @Getter
 @Builder
-public class ContractCollateralCalculateResult {
+public class ContractCollateralResult {
 
     /**
      * 담보아이디

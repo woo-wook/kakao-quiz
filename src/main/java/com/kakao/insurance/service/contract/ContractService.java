@@ -1,6 +1,6 @@
 package com.kakao.insurance.service.contract;
 
-import com.kakao.insurance.dto.contract.ContractCollateralCalculateResult;
+import com.kakao.insurance.dto.contract.ContractCollateralResult;
 import com.kakao.insurance.dto.contract.ContractCalculateResult;
 import com.kakao.insurance.entity.collateral.Collateral;
 import com.kakao.insurance.entity.contract.Contract;
@@ -18,8 +18,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.math.BigDecimal;
-import java.math.RoundingMode;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
@@ -131,7 +129,7 @@ public class ContractService {
                 .collaterals(
                     collaterals.stream()
                             .map(
-                                    collateral -> ContractCollateralCalculateResult.builder()
+                                    collateral -> ContractCollateralResult.builder()
                                                     .collateralId(collateral.getId())
                                                     .collateralName(collateral.getName())
                                                     .premium(collateral.getPremium(contractMonths))

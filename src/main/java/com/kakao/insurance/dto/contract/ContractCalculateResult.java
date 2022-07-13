@@ -39,7 +39,7 @@ public class ContractCalculateResult {
      * 담보목록
      */
     @ApiModelProperty("담보목록")
-    private List<ContractCollateralCalculateResult> collaterals;
+    private List<ContractCollateralResult> collaterals;
 
     /**
      * 총 보험료를 계산합니다.
@@ -52,7 +52,7 @@ public class ContractCalculateResult {
         }
 
         return collaterals.stream()
-                .map(ContractCollateralCalculateResult::getPremium)
+                .map(ContractCollateralResult::getPremium)
                 .filter(Objects::nonNull)
                 .reduce(BigDecimal.ZERO, BigDecimal::add);
     }
