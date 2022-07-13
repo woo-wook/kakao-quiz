@@ -6,9 +6,9 @@ import com.kakao.insurance.common.exception.UncheckedException;
 /**
  * 계약이 불가능한 기간입니다.
  */
-public class PossiblePeriodException extends UncheckedException {
+public class ImpossiblePeriodException extends UncheckedException {
 
-    public PossiblePeriodException() {
+    public ImpossiblePeriodException() {
         super(ExceptionCode.POSSIBLE_PERIOD);
     }
 }

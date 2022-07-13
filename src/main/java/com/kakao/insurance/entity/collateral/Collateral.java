@@ -48,8 +48,19 @@ public class Collateral extends BaseEntity {
      * 1달 보험료
      * @return (가입금액 / 기준금액)
      */
-    public BigDecimal getMonthPremium() {
+    private BigDecimal getMonthPremium() {
         return BigDecimal.valueOf(this.insureAmount)
                 .divide(BigDecimal.valueOf(this.baseAmount), 2, RoundingMode.DOWN);
+    }
+
+    /**
+     * 보험료 조회
+     * @param contractMonths 계약기간
+     * @return 해당 계약기간에 해당하는 보험료
+     */
+    public BigDecimal getPremium(int contractMonths) {
+        return BigDecimal.valueOf(contractMonths)
+                .multiply(getMonthPremium())
+                .setScale(2, RoundingMode.DOWN);
     }
 }

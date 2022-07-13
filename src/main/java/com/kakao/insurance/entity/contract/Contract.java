@@ -3,11 +3,14 @@ package com.kakao.insurance.entity.contract;
 import com.kakao.insurance.entity.BaseEntity;
 import com.kakao.insurance.entity.product.Product;
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.springframework.util.Assert;
 
 import javax.persistence.*;
 import java.time.LocalDate;
+import java.time.temporal.TemporalUnit;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -66,4 +69,39 @@ public class Contract extends BaseEntity {
      */
     @OneToMany(mappedBy = "contract", cascade = ALL, orphanRemoval = true)
     private List<ContractCollateral> collaterals = new ArrayList<>();
+
+    /**
+     * 생성자
+     */
+    @Builder
+    public Contract(String contractNumber, Product product, int contractMonths,
+                    LocalDate insureStartDate, LocalDate insureEndDate, ContractStatus status) {
+        this.contractNumber = contractNumber;
+        this.product = product;
+        this.contractMonths = contractMonths;
+        this.insureStartDate = insureStartDate;
+        this.insureEndDate = insureEndDate;
+        this.status = status;
+    }
+
+    /**
+     * 계약을 생성합니다.
+     * @param contractNumber 계약번호
+     * @param product 계약상품
+     * @param contractMonths 계약기간
+     * @return 적용되는 계약정보
+     */
+    public static Contract create(String contractNumber, Product product, int contractMonths) {
+        LocalDate start = LocalDate.now();
+        LocalDate end = start.plusMonths(contractMonths);
+
+        return Contract.builder()
+                .contractNumber(contractNumber)
+                .product(product)
+                .contractMonths(contractMonths)
+                .insureStartDate(start)
+                .insureEndDate(end)
+                .status(ContractStatus.NORMAL)
+                .build();
+    }
 }

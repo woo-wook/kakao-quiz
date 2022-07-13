@@ -2,8 +2,10 @@ package com.kakao.insurance.entity.contract;
 
 import com.kakao.insurance.entity.collateral.Collateral;
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.springframework.util.Assert;
 
 import javax.persistence.*;
 
@@ -62,4 +64,22 @@ public class ContractCollateral {
      */
     @Column(scale = 2)
     private BigDecimal premium;
+
+    /**
+     * 생성자
+     */
+    @Builder
+    public ContractCollateral(Contract contract, Collateral collateral) {
+        Assert.notNull(contract, "contract must not be null!");
+        Assert.notNull(collateral, "contract must not be collateral!");
+
+        this.contract = contract;
+        this.collateral = collateral;
+        this.name = collateral.getName();
+        this.insureAmount = collateral.getInsureAmount();
+        this.baseAmount = collateral.getBaseAmount();
+        this.premium = collateral.getPremium(contract.getContractMonths());
+
+        this.contract.getCollaterals().add(this);
+    }
 }
