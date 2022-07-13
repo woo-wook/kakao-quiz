@@ -27,3 +27,9 @@ VALUES ('unknown', CURRENT_TIMESTAMP(), 'unknown', CURRENT_TIMESTAMP(), 1, 3, 2)
 
 INSERT INTO PRODUCT_COLLATERAL(CREATED_BY, CREATED_DATE, MODIFIED_BY, MODIFIED_DATE, SORT, COLLATERAL_ID, PRODUCT_ID)
 VALUES ('unknown', CURRENT_TIMESTAMP(), 'unknown', CURRENT_TIMESTAMP(), 2, 4, 2);
+
+INSERT INTO contract (contract_id, created_by, created_date, modified_by, modified_date, contract_months, contract_number, insure_end_date, insure_start_date, product_id, status)
+values (1, 'unknown', CURRENT_TIMESTAMP(), 'unknown', CURRENT_TIMESTAMP(), 2, '201908290001', '20191028', '20190829', 1, 'EXPIRY');
+
+insert into contract_collateral (contract_collateral_id, base_amount, collateral_id, contract_id, insure_amount, name, premium)
+values (1, 100, 1, 1, 1000000, '상해치료비', 20000);
