@@ -25,10 +25,10 @@ public class ContractV1Controller {
     private final ContractService contractService;
 
     /**
-     * 계약 > 계약 목록 조회
+     * 계약 > 계약 정보 목록 조회
      * @return 등록되어있는 모든 계약
      */
-    @ApiOperation(value = "계약 > 계약 목록 조회", notes = "현재 등록되어 있는 모든 계약을 조회합니다.")
+    @ApiOperation(value = "계약 > 계약 정보 목록 조회", notes = "현재 등록되어 있는 모든 계약을 조회합니다.")
     @GetMapping
     public ResponseEntity<List<ContractListResult>> findAll() {
         log.debug("ContractV1Controller :: findAll");
@@ -59,11 +59,11 @@ public class ContractV1Controller {
     }
 
     /**
-     * 계약 > 계약 조회
+     * 계약 > 계약 정보 조회
      * @param contractId 계약 PK
      * @return 해당 계약 정보
      */
-    @ApiOperation(value = "계약 > 계약 조회", notes = "계약 아이디로 계약을 조회합니다.")
+    @ApiOperation(value = "계약 > 계약 정보 조회", notes = "계약 아이디로 계약을 조회합니다.")
     @GetMapping("/{contractId}")
     public ResponseEntity<ContractResult> findById(@PathVariable("contractId") Long contractId) {
         log.debug("ContractV1Controller :: findById");
@@ -74,11 +74,11 @@ public class ContractV1Controller {
     }
 
     /**
-     * 계약 > 계약 수정
+     * 계약 > 계약 정보 수정
      * @param contractId 계약 PK
      * @param param {@link ContractUpdateParam}
      */
-    @ApiOperation(value = "계약 > 계약 수정", notes = "계약을 수정합니다.\n계약 수정 시 보험료는 현재 시점의 담보 금액 기준으로 다시 계산하여 반영합니다.")
+    @ApiOperation(value = "계약 > 계약 정보 수정", notes = "계약을 수정합니다.\n계약 수정 시 보험료는 현재 시점의 담보 금액 기준으로 다시 계산하여 반영합니다.")
     @PutMapping("/{contractId}")
     public ResponseEntity<Void> update(@PathVariable("contractId") Long contractId, @Validated @RequestBody final ContractUpdateParam param) {
         log.debug("ContractV1Controller :: update");
