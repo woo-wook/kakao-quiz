@@ -1,5 +1,6 @@
 package com.kakao.insurance.dto.product;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.kakao.insurance.dto.collateral.CollateralResult;
 import com.kakao.insurance.entity.product.Product;
 import io.swagger.annotations.ApiModel;
@@ -29,12 +30,15 @@ public class ProductResult {
     private int maxContractMonths;
 
     @ApiModelProperty(value = "유효기간 시작일", notes = "yyyy-MM-dd'T'HH:mm:ss")
+    @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss'Z'", timezone = "Asia/Seoul")
     private LocalDateTime validityStartDate;
 
     @ApiModelProperty(value = "유효기간 종료일", notes = "yyyy-MM-dd'T'HH:mm:ss")
+    @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss'Z'", timezone = "Asia/Seoul")
     private LocalDateTime validityEndDate;
 
     @ApiModelProperty(value = "생성일자")
+    @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss'Z'", timezone = "Asia/Seoul")
     private LocalDateTime createdDate;
 
     @ApiModelProperty(value = "담보 목록")

@@ -50,12 +50,14 @@ public class ContractListResult {
      * 보험 시작 일자
      */
     @ApiModelProperty("보험 시작 일자")
+    @JsonFormat(pattern = "yyyy-MM-dd", timezone = "Asia/Seoul")
     private LocalDate insureStartDate;
 
     /**
      * 보험 종료 일자
      */
     @ApiModelProperty("보험 종료 일자")
+    @JsonFormat(pattern = "yyyy-MM-dd", timezone = "Asia/Seoul")
     private LocalDate insureEndDate;
 
     /**

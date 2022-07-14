@@ -1,5 +1,6 @@
 package com.kakao.insurance.dto.contract;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.kakao.insurance.entity.contract.Contract;
 import com.kakao.insurance.entity.contract.ContractStatus;
 import com.kakao.insurance.entity.product.Product;
@@ -52,12 +53,14 @@ public class ContractResult {
      * 보험 시작 일자
      */
     @ApiModelProperty("보험 시작 일자")
+    @JsonFormat(pattern = "yyyy-MM-dd", timezone = "Asia/Seoul")
     private LocalDate insureStartDate;
 
     /**
      * 보험 종료 일자
      */
     @ApiModelProperty("보험 종료 일자")
+    @JsonFormat(pattern = "yyyy-MM-dd", timezone = "Asia/Seoul")
     private LocalDate insureEndDate;
 
     /**
