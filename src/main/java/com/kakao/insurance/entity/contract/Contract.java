@@ -106,6 +106,19 @@ public class Contract extends BaseEntity {
     }
 
     /**
+     * 계약을 수정합니다.
+     * @param contractMonths 계약기간
+     * @param status 계약상태
+     */
+    public void update(int contractMonths, ContractStatus status) {
+        LocalDate end = insureStartDate.plusMonths(contractMonths);
+
+        this.insureEndDate = end;
+        this.contractMonths = contractMonths;
+        this.status = status;
+    }
+
+    /**
      * 총 보험료 조회
      * @return 총 보험료
      */

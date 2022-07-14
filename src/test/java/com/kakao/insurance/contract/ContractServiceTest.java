@@ -3,6 +3,7 @@ package com.kakao.insurance.contract;
 import com.kakao.insurance.dto.contract.ContractCalculateResult;
 import com.kakao.insurance.entity.contract.Contract;
 import com.kakao.insurance.entity.contract.ContractStatus;
+import com.kakao.insurance.exception.contract.ContractExpiryException;
 import com.kakao.insurance.service.contract.ContractService;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -76,8 +77,42 @@ public class ContractServiceTest {
         Assertions.assertEquals(contract.getInsureEndDate(), LocalDate.now().plusMonths(travelContractMonths));
         Assertions.assertEquals(contract.getStatus(), ContractStatus.NORMAL);
         Assertions.assertEquals(contract.getProduct().getId(), travelProductId);
-        Assertions.assertEquals(contract.getCollaterals().stream().findFirst().get().getId(), 1L);
         Assertions.assertEquals(contract.getTotalPremium(), new BigDecimal("20000.00"));
+    }
+    
+    @Test
+    public void 계약_수정() throws Exception {
+        // given
+        Long contractId = 2L;
+        List<Long> collateralIds = Arrays.asList(1L, 2L); // 담보
+        int contractMonths = 3;
+        ContractStatus status = ContractStatus.WITHDRAW;
+        
+        // when
+        contractService.update(contractId, collateralIds, contractMonths, status);
+        Contract contract = contractService.findById(contractId);
+
+        // then
+        Assertions.assertNotNull(contract);
+        Assertions.assertEquals(contract.getContractMonths(), contractMonths);
+        Assertions.assertEquals(contract.getInsureEndDate(), contract.getInsureStartDate().plusMonths(contractMonths));
+        Assertions.assertEquals(contract.getStatus(), status);
+        Assertions.assertEquals(contract.getCollaterals().size(), 2);
+        Assertions.assertEquals(contract.getTotalPremium(), new BigDecimal("45000.00")); // 30000 + 15000
+    }
+
+    @Test
+    public void 계약_수정_기간만료_불가() throws Exception {
+        // given
+        Long contractId = 1L;
+        List<Long> collateralIds = Arrays.asList(1L, 2L); // 담보
+        int contractMonths = 3;
+        ContractStatus status = ContractStatus.WITHDRAW;
+
+        // when & then
+        Assertions.assertThrows(ContractExpiryException.class, () -> {
+            contractService.update(contractId, collateralIds, contractMonths, status);
+        });
     }
     
     @Test

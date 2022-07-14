@@ -1,16 +1,19 @@
 package com.kakao.insurance.service.contract;
 
-import com.kakao.insurance.dto.contract.ContractCollateralResult;
 import com.kakao.insurance.dto.contract.ContractCalculateResult;
+import com.kakao.insurance.dto.contract.ContractCollateralResult;
 import com.kakao.insurance.entity.collateral.Collateral;
 import com.kakao.insurance.entity.contract.Contract;
 import com.kakao.insurance.entity.contract.ContractCollateral;
+import com.kakao.insurance.entity.contract.ContractStatus;
 import com.kakao.insurance.entity.product.Product;
 import com.kakao.insurance.exception.collateral.CollateralNotFoundException;
+import com.kakao.insurance.exception.contract.ContractExpiryException;
 import com.kakao.insurance.exception.contract.ContractNotFoundException;
 import com.kakao.insurance.exception.product.ImpossiblePeriodException;
 import com.kakao.insurance.exception.product.ProductNotFoundException;
 import com.kakao.insurance.repository.collateral.CollateralRepository;
+import com.kakao.insurance.repository.contract.ContractCollateralQuerydslRepository;
 import com.kakao.insurance.repository.contract.ContractQuerydslRepository;
 import com.kakao.insurance.repository.contract.ContractRepository;
 import com.kakao.insurance.repository.product.ProductRepository;
@@ -34,6 +37,7 @@ public class ContractService {
 
     private final ContractRepository contractRepository;
     private final ContractQuerydslRepository contractQuerydslRepository;
+    private final ContractCollateralQuerydslRepository contractCollateralQuerydslRepository;
     private final CollateralRepository collateralRepository;
     private final ProductRepository productRepository;
 
@@ -105,6 +109,59 @@ public class ContractService {
                                 .collateral(collateral)
                                 .build()
                 );
+
+        return contract;
+    }
+
+    /**
+     * 계약을 수정합니다.
+     * @param contractId 계약 PK
+     * @param collateralIds 담보 목록 ID
+     * @param contractMonths 계약기간
+     * @param status 계약상태
+     * @return 수정된 계약 정보
+     */
+    @Transactional
+    public Contract update(Long contractId, List<Long> collateralIds, int contractMonths, ContractStatus status) {
+        Contract contract = contractRepository.findById(contractId)
+                .orElseThrow(ContractNotFoundException::new);
+
+        List<Collateral> collaterals = collateralRepository.findAllById(collateralIds);
+
+        if(collaterals.isEmpty()) {
+            throw new CollateralNotFoundException();
+        }
+
+        return update(contract, collaterals, contractMonths, status);
+    }
+
+    /**
+     * 계약을 수정합니다.
+     * @param contract 계약
+     * @param collaterals 담보
+     * @param contractMonths 계약기간
+     * @param status 계약상태
+     * @return 수정된 계약 정보
+     */
+    @Transactional
+    public Contract update(Contract contract, List<Collateral> collaterals, int contractMonths, ContractStatus status) {
+        if(contract.getStatus() == ContractStatus.EXPIRY) {
+            throw new ContractExpiryException();
+        }
+
+        // 기간정보 수정
+        contract.update(contractMonths, status);
+
+        // 담보 정보 일괄 제거
+        contractCollateralQuerydslRepository.deleteByContractId(contract.getId());
+
+        // 담보 등록(수정 시 금액 재 계산)
+        collaterals.forEach(collateral ->
+                ContractCollateral.builder()
+                        .contract(contract)
+                        .collateral(collateral)
+                        .build()
+        );
 
         return contract;
     }

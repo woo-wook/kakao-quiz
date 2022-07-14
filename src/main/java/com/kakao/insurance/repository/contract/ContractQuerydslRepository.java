@@ -1,14 +1,9 @@
 package com.kakao.insurance.repository.contract;
 
-import com.kakao.insurance.entity.collateral.QCollateral;
 import com.kakao.insurance.entity.contract.Contract;
-import com.kakao.insurance.entity.contract.QContract;
-import com.kakao.insurance.entity.contract.QContractCollateral;
-import com.kakao.insurance.entity.product.QProduct;
 import com.kakao.insurance.support.querydsl.Querydsl4RepositorySupport;
 import org.springframework.stereotype.Repository;
 
-import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 

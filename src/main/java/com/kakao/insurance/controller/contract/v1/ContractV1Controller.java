@@ -54,7 +54,7 @@ public class ContractV1Controller {
         Contract contract = contractService.create(param.getProductId(), param.getCollateralIds(), param.getContractMonths());
 
         return ResponseEntity
-                .created(URI.create("/api/v1/contracts/" + contract.getId()) )
+                .created(URI.create("/api/v1/contracts/" + contract.getId()))
                 .build();
     }
 
@@ -71,6 +71,23 @@ public class ContractV1Controller {
         Contract result = contractService.findById(contractId);
 
         return ResponseEntity.ok(ContractResult.toResult(result));
+    }
+
+    /**
+     * 계약 > 계약 수정
+     * @param contractId 계약 PK
+     * @param param {@link ContractUpdateParam}
+     */
+    @ApiOperation(value = "계약 > 계약 수정", notes = "계약을 수정합니다.\n계약 수정 시 보험료는 현재 시점의 담보 금액 기준으로 다시 계산하여 반영합니다.")
+    @PutMapping("/{contractId}")
+    public ResponseEntity<Void> update(@PathVariable("contractId") Long contractId, @Validated @RequestBody final ContractUpdateParam param) {
+        log.debug("ContractV1Controller :: update");
+
+        contractService.update(contractId, param.getCollateralIds(), param.getContractMonths(), param.getStatus());
+
+        return ResponseEntity
+                .noContent()
+                .build();
     }
 
     /**
