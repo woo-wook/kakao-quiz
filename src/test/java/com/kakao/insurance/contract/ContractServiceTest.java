@@ -4,6 +4,7 @@ import com.kakao.insurance.dto.contract.ContractCalculateResult;
 import com.kakao.insurance.entity.contract.Contract;
 import com.kakao.insurance.entity.contract.ContractStatus;
 import com.kakao.insurance.exception.contract.ContractExpiryException;
+import com.kakao.insurance.exception.product.NotProductCollateralException;
 import com.kakao.insurance.service.contract.ContractService;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -111,6 +112,20 @@ public class ContractServiceTest {
 
         // when & then
         Assertions.assertThrows(ContractExpiryException.class, () -> {
+            contractService.update(contractId, collateralIds, contractMonths, status);
+        });
+    }
+
+    @Test
+    public void 계약_수정_미존재_담보() throws Exception {
+        // given
+        Long contractId = 2L;
+        List<Long> collateralIds = Arrays.asList(4L, 3L); // 담보
+        int contractMonths = 3;
+        ContractStatus status = ContractStatus.WITHDRAW;
+
+        // when & then
+        Assertions.assertThrows(NotProductCollateralException.class, () -> {
             contractService.update(contractId, collateralIds, contractMonths, status);
         });
     }

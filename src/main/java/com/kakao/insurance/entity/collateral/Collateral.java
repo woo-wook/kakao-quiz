@@ -1,18 +1,19 @@
 package com.kakao.insurance.entity.collateral;
 
 import com.kakao.insurance.entity.BaseEntity;
+import com.kakao.insurance.entity.product.ProductCollateral;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
+import javax.persistence.*;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
+import java.util.ArrayList;
+import java.util.List;
 
+import static javax.persistence.CascadeType.ALL;
 import static javax.persistence.GenerationType.IDENTITY;
 
 /**
@@ -43,6 +44,12 @@ public class Collateral extends BaseEntity {
      * 기준금액
      */
     private int baseAmount;
+
+    /**
+     * 상품 매핑 정보
+     */
+    @OneToMany(mappedBy = "collateral", cascade = ALL, orphanRemoval = true)
+    private List<ProductCollateral> products = new ArrayList<>();
 
     /**
      * 1달 보험료

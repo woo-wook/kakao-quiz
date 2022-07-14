@@ -11,11 +11,13 @@ import com.kakao.insurance.exception.collateral.CollateralNotFoundException;
 import com.kakao.insurance.exception.contract.ContractExpiryException;
 import com.kakao.insurance.exception.contract.ContractNotFoundException;
 import com.kakao.insurance.exception.product.ImpossiblePeriodException;
+import com.kakao.insurance.exception.product.NotProductCollateralException;
 import com.kakao.insurance.exception.product.ProductNotFoundException;
 import com.kakao.insurance.repository.collateral.CollateralRepository;
 import com.kakao.insurance.repository.contract.ContractCollateralQuerydslRepository;
 import com.kakao.insurance.repository.contract.ContractQuerydslRepository;
 import com.kakao.insurance.repository.contract.ContractRepository;
+import com.kakao.insurance.repository.product.ProductCollateralQuerydslRepository;
 import com.kakao.insurance.repository.product.ProductRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -40,6 +42,7 @@ public class ContractService {
     private final ContractCollateralQuerydslRepository contractCollateralQuerydslRepository;
     private final CollateralRepository collateralRepository;
     private final ProductRepository productRepository;
+    private final ProductCollateralQuerydslRepository productCollateralQuerydslRepository;
 
     /**
      * 계약 목록을 조회합니다.
@@ -91,12 +94,8 @@ public class ContractService {
      */
     @Transactional
     public Contract create(Product product, List<Collateral> collaterals, int contractMonths) {
-        // 계약 기간 검증
-        if(contractMonths == 0
-                || product.getMinContractMonths() > contractMonths
-                || product.getMaxContractMonths() < contractMonths) {
-            throw new ImpossiblePeriodException();
-        }
+        // 상품 검증
+        validProduct(product, collaterals, contractMonths);
 
         // 계약 생성
         Contract contract = Contract.create(generateContractNumber(), product, contractMonths);
@@ -148,6 +147,9 @@ public class ContractService {
         if(contract.getStatus() == ContractStatus.EXPIRY) {
             throw new ContractExpiryException();
         }
+
+        // 상품 검증
+        validProduct(contract.getProduct(), collaterals, contractMonths);
 
         // 기간정보 수정
         contract.update(contractMonths, status);
@@ -231,5 +233,24 @@ public class ContractService {
         int key = Integer.parseInt(lastContractNumber.substring(lastContractNumber.length() - 4));
 
         return String.format("%s%04d", nowDate, key + 1);
+    }
+
+    /**
+     * 상품의 계약기간 및 가입 가능한 담보인지 검증합니다.
+     * @param product 상품
+     * @param collaterals 담보 목록
+     */
+    private void validProduct(Product product, List<Collateral> collaterals, int contractMonths) {
+        if(contractMonths == 0
+                || product.getMinContractMonths() > contractMonths
+                || product.getMaxContractMonths() < contractMonths) {
+            throw new ImpossiblePeriodException();
+        }
+
+        Long productCollateralsCount = productCollateralQuerydslRepository.countByCollaterals(product, collaterals);
+
+        if(productCollateralsCount == null || productCollateralsCount != collaterals.size()) {
+            throw new NotProductCollateralException();
+        }
     }
 }
