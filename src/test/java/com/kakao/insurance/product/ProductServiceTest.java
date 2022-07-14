@@ -26,8 +26,6 @@ public class ProductServiceTest {
         List<Product> result = productService.findAll();
 
         // then
-        Assertions.assertEquals(result.size(), 2);
-
         Product product = result.get(0); // 대표 케이스 추출 (여행자 보험)
 
         Assertions.assertEquals(product.getName(), "여행자 보험");
@@ -75,13 +73,13 @@ public class ProductServiceTest {
     @Test
     public void 상품_수정() throws Exception {
         // given
-        Long productId = 1L;
-        String name = "여행자 보험";
+        Long productId = 2L;
+        String name = "휴대폰 보험";
         int minContractMonths = 1;
         int maxContractMonths = 12;
         LocalDateTime validityStartDate = LocalDateTime.of(2022, 7, 14, 0, 0);
         LocalDateTime validityEndDate = LocalDateTime.of(2023, 7, 13, 23, 59);
-        List<Long> addCollateralIds = Arrays.asList(4L);
+        List<Long> addCollateralIds = Arrays.asList(1L);
         
         // when
         Product product = productService.update(productId, name, minContractMonths, maxContractMonths, validityStartDate, validityEndDate, addCollateralIds);

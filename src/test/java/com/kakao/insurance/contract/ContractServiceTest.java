@@ -84,7 +84,7 @@ public class ContractServiceTest {
     @Test
     public void 계약_수정() throws Exception {
         // given
-        Long contractId = 2L;
+        Long contractId = 3L;
         List<Long> collateralIds = Arrays.asList(1L, 2L); // 담보
         int contractMonths = 3;
         ContractStatus status = ContractStatus.WITHDRAW;

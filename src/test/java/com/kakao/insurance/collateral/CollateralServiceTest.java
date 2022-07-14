@@ -23,8 +23,6 @@ public class CollateralServiceTest {
         List<Collateral> result = collateralService.findAll();
 
         // then
-        Assertions.assertEquals(result.size(), 4);
-
         Collateral collateral = result.get(0); // 대표 케이스 추출 (상해치료비)
 
         Assertions.assertEquals(collateral.getName(), "상해치료비");
@@ -65,8 +63,8 @@ public class CollateralServiceTest {
     @Test
     public void 담보_수정() throws Exception {
         // given
-        Long collateralId = 1L;
-        String name = "상해치료비";
+        Long collateralId = 5L;
+        String name = "암치료비";
         int insureAmount = 20000000;
         int baseAmount = 50;
 
