@@ -2,6 +2,7 @@ package com.kakao.insurance.entity.product;
 
 import com.kakao.insurance.entity.BaseEntity;
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -57,6 +58,32 @@ public class Product extends BaseEntity {
      */
     private LocalDateTime validityEndDate;
 
-    @OneToMany(mappedBy = "product")
+    /**
+     * 담보 목록
+     */
+    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<ProductCollateral> collaterals = new ArrayList<>();
+
+    /**
+     * 생성자
+     */
+    @Builder
+    public Product(String name, int minContractMonths, int maxContractMonths, LocalDateTime validityStartDate, LocalDateTime validityEndDate) {
+        this.name = name;
+        this.minContractMonths = minContractMonths;
+        this.maxContractMonths = maxContractMonths;
+        this.validityStartDate = validityStartDate;
+        this.validityEndDate = validityEndDate;
+    }
+
+    /**
+     * 수정
+     */
+    public void update(String name, int minContractMonths, int maxContractMonths, LocalDateTime validityStartDate, LocalDateTime validityEndDate) {
+        this.name = name;
+        this.minContractMonths = minContractMonths;
+        this.maxContractMonths = maxContractMonths;
+        this.validityStartDate = validityStartDate;
+        this.validityEndDate = validityEndDate;
+    }
 }

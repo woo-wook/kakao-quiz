@@ -3,8 +3,10 @@ package com.kakao.insurance.entity.product;
 import com.kakao.insurance.entity.BaseEntity;
 import com.kakao.insurance.entity.collateral.Collateral;
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.springframework.util.Assert;
 
 import javax.persistence.*;
 
@@ -38,8 +40,18 @@ public class ProductCollateral extends BaseEntity {
     @JoinColumn(name = "collateral_id", nullable = false, foreignKey = @ForeignKey(name = "fk_product_collateral_02"))
     private Collateral collateral;
 
+
     /**
-     * 정렬순서
+     * 생성자
      */
-    private int sort;
+    @Builder
+    public ProductCollateral(Product product, Collateral collateral) {
+        Assert.notNull(product, "product must not be null!");
+        Assert.notNull(collateral, "collateral must not be null!");
+
+        this.product = product;
+        this.collateral = collateral;
+
+        this.product.getCollaterals().add(this);
+    }
 }

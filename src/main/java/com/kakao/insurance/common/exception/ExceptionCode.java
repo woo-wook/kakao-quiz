@@ -8,6 +8,7 @@ import org.springframework.http.HttpStatus;
 public enum ExceptionCode {
     PRODUCT_NOT_FOUND(HttpStatus.NOT_FOUND, "PRODUCT_NOT_FOUND", "상품이 존재하지 않습니다."),
     NOT_PRODUCT_COLLATERAL(HttpStatus.BAD_REQUEST, "NOT_PRODUCT_COLLATERAL", "해당 상품의 담보가 아닙니다."),
+    PRODUCT_COLLATERAL_DUPLICATE(HttpStatus.BAD_REQUEST, "PRODUCT_COLLATERAL_DUPLICATE", "이미 해당 상품에 등록된 담보입니다."),
     POSSIBLE_PERIOD(HttpStatus.BAD_REQUEST, "POSSIBLE_PERIOD", "계약이 불가능한 기간입니다."),
     COLLATERAL_NOT_FOUND(HttpStatus.NOT_FOUND, "COLLATERAL_NOT_FOUND", "담보가 존재하지 않습니다."),
     CONTRACT_NOT_FOUND(HttpStatus.NOT_FOUND, "CONTRACT_NOT_FOUND", "계약이 존재하지 않습니다."),
