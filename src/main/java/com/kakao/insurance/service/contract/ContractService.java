@@ -21,6 +21,7 @@ import com.kakao.insurance.repository.product.ProductCollateralQuerydslRepositor
 import com.kakao.insurance.repository.product.ProductRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.tomcat.jni.Local;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -217,6 +218,18 @@ public class ContractService {
                             .collect(Collectors.toList())
                 )
                 .build();
+    }
+
+    /**
+     * N일 후 만료되는 계약 목록을 조회합니다.
+     * @param days N Days
+     * @return 계약의 목록
+     */
+    @Transactional(readOnly = true)
+    public List<Contract> findListByContractExpireDays(int days) {
+        // 검색일자
+        LocalDate searchDate = LocalDate.now().plusDays(days);
+        return contractQuerydslRepository.findListByInsureEndDate(searchDate);
     }
 
     /**

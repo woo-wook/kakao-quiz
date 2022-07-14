@@ -1,9 +1,12 @@
 package com.kakao.insurance.repository.contract;
 
 import com.kakao.insurance.entity.contract.Contract;
+import com.kakao.insurance.entity.contract.ContractStatus;
+import com.kakao.insurance.entity.product.QProduct;
 import com.kakao.insurance.support.querydsl.Querydsl4RepositorySupport;
 import org.springframework.stereotype.Repository;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
@@ -48,6 +51,20 @@ public class ContractQuerydslRepository extends Querydsl4RepositorySupport {
                         )
                         .fetchOne()
         );
+    }
+
+    /**
+     * 계약 종료일로 계약을 조회합니다.
+     * @param insureEndDate 계약종료일
+     * @return 해당 종료일에 종료되는 계약의 목록
+     */
+    public List<Contract> findListByInsureEndDate(LocalDate insureEndDate) {
+        return selectFrom(contract)
+                .innerJoin(contract.product, product).fetchJoin()
+                .where(
+                        contract.insureEndDate.eq(insureEndDate),
+                        contract.status.eq(ContractStatus.NORMAL)
+                ).fetch();
     }
 
     /**
