@@ -21,7 +21,7 @@ public class ContractResult {
     /**
      * 계약아이디
      */
-    @ApiModelProperty("상품아이디")
+    @ApiModelProperty("계약아이디")
     private Long contractId;
 
     /**
