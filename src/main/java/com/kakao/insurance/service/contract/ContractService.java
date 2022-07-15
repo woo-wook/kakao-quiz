@@ -11,6 +11,7 @@ import com.kakao.insurance.exception.collateral.CollateralNotFoundException;
 import com.kakao.insurance.exception.contract.ContractExpiryException;
 import com.kakao.insurance.exception.contract.ContractNotFoundException;
 import com.kakao.insurance.exception.product.ImpossiblePeriodException;
+import com.kakao.insurance.exception.product.InvalidProductException;
 import com.kakao.insurance.exception.product.NotProductCollateralException;
 import com.kakao.insurance.exception.product.ProductNotFoundException;
 import com.kakao.insurance.repository.collateral.CollateralRepository;
@@ -25,6 +26,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -257,6 +259,12 @@ public class ContractService {
                 || product.getMinContractMonths() > contractMonths
                 || product.getMaxContractMonths() < contractMonths) {
             throw new ImpossiblePeriodException();
+        }
+
+        LocalDateTime now = LocalDateTime.now();
+
+        if(now.isBefore(product.getValidityStartDate()) || now.isAfter(product.getValidityEndDate())) {
+            throw new InvalidProductException();
         }
 
         Long productCollateralsCount = productCollateralQuerydslRepository.countByCollaterals(product, collaterals);
